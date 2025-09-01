@@ -1,8 +1,8 @@
 services:
-  - type: static
+  - type: web
     name: midivisuals
     env: node
     branch: main
-    buildCommand: "npm ci && npm run build"
-    publishPath: "dist"
+    buildCommand: "npm ci && npm run build && cd server && npm ci"
+    startCommand: "node server/index.mjs"
     root: "."
