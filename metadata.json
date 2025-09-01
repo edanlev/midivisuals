@@ -1,0 +1,5 @@
+{
+  "name": "MIDI Art Visualizer",
+  "description": "An interactive WebGL application that generates beautiful, dynamic visuals in real-time from MIDI keyboard input. Explore different artistic modes like bubbles, waves, fire, and growing trees.",
+  "requestFramePermissions": []
+}
