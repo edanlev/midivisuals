@@ -7,12 +7,11 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { useMidi } from "../hooks/useMidi";
 import { UI } from "./UI";
 import { noteToHue, noteToX } from "../utils/helpers";
-import type { VisualizerMode, BubbleLayer, WaveLayer, PlasmaLayer, TreeLayer, NoteInfo, SolarLayer } from "../types";
+import type { VisualizerMode, BubbleLayer, WaveLayer, PlasmaLayer, TreeLayer, NoteInfo } from "../types";
 import { createBubblesLayer, updateBubbles, onBubbleNoteOn, onBubbleNoteOff } from "../visualizers/bubbles";
 import { createWavesLayer, updateWaves, onWaveNoteOn, onWaveNoteOff } from "../visualizers/waves";
 import { createPlasmaLayer, updatePlasma, onPlasmaNoteOn, onPlasmaNoteOff } from "../visualizers/plasma";
 import { createTreesLayer, updateTrees, onTreeNoteOn, onTreeNoteOff } from "../visualizers/trees";
-import { createSolarLayer, updateSolar, onSolarNoteOn, onSolarNoteOff } from "../visualizers/SolarLayer_WavesAutoNotes";
 import { createWaterLayer, updateWater, onWaterNoteOn, onWaterNoteOff } from "../visualizers/water";
 
 const GRADIENT_WIDTH = 16;
@@ -31,7 +30,6 @@ export function WebGLMidiVisualizer() {
   const wavesLayer = useRef<WaveLayer | null>(null);
   const plasmaLayer = useRef<PlasmaLayer | null>(null);
   const treesLayer = useRef<TreeLayer | null>(null);
-  const solarLayer = useRef<SolarLayer | null>(null);
   const waterLayer = useRef<WaveLayer | null>(null);
   
   const gradientTexture = useRef<THREE.DataTexture | null>(null);
@@ -47,7 +45,6 @@ export function WebGLMidiVisualizer() {
       case "waves": wavesLayer.current && onWaveNoteOn(wavesLayer.current, x, velocity); break;
       case "plasma": plasmaLayer.current && onPlasmaNoteOn(plasmaLayer.current, x, velocity); break;
       case "trees": treesLayer.current && onTreeNoteOn(treesLayer.current, note, velocity, color); break;
-      case "solar": solarLayer.current && onSolarNoteOn(solarLayer.current, note, velocity); break;
       case "water": waterLayer.current && onWaterNoteOn(waterLayer.current, x, velocity, hue); break;
     }
   }, [mode]);
@@ -63,7 +60,6 @@ export function WebGLMidiVisualizer() {
       case "waves": wavesLayer.current && onWaveNoteOff(wavesLayer.current, x, velocity, heldMs); break;
       case "plasma": plasmaLayer.current && onPlasmaNoteOff(plasmaLayer.current, x, velocity, heldMs); break;
       case "trees": treesLayer.current && onTreeNoteOff(treesLayer.current, note, velocity, heldMs); break;
-      case "solar": solarLayer.current && onSolarNoteOff(solarLayer.current, note); break;
       case "water": waterLayer.current && onWaterNoteOff(waterLayer.current, x, velocity, heldMs); break;
     }
   }, [mode]);
@@ -134,7 +130,6 @@ export function WebGLMidiVisualizer() {
     treesLayer.current = createTreesLayer(scene, w, h);
     treesLayer.current.uniforms.u_color_gradient.value = gradientTexture.current;
 
-    solarLayer.current = createSolarLayer(scene, w, h);
 
     waterLayer.current = createWaterLayer(scene, w, h);
     waterLayer.current.uniforms.u_color_gradient.value = gradientTexture.current;
@@ -208,7 +203,7 @@ export function WebGLMidiVisualizer() {
       
       // Update uniforms and layer logic
       const timeSeconds = time / 1000;
-      const allLayers = [bubblesLayer.current, wavesLayer.current, plasmaLayer.current, treesLayer.current, solarLayer.current, waterLayer.current];
+  const allLayers = [bubblesLayer.current, wavesLayer.current, plasmaLayer.current, treesLayer.current, waterLayer.current];
       allLayers.forEach(layer => {
         if(layer?.mesh.visible) layer.uniforms.u_time.value = timeSeconds;
       });
@@ -217,7 +212,6 @@ export function WebGLMidiVisualizer() {
       if (wavesLayer.current?.mesh.visible) updateWaves(wavesLayer.current, dt);
       if (plasmaLayer.current?.mesh.visible) updatePlasma(plasmaLayer.current, dt);
       if (treesLayer.current?.mesh.visible) updateTrees(treesLayer.current, dt);
-      if (solarLayer.current?.mesh.visible) updateSolar(solarLayer.current, timeSeconds);
       if (waterLayer.current?.mesh.visible) updateWater(waterLayer.current, dt);
       
       composer.render();
@@ -234,7 +228,7 @@ export function WebGLMidiVisualizer() {
       rendererRef.current.setSize(newW, newH);
       composerRef.current.setSize(newW, newH);
 
-      const allLayers = [bubblesLayer.current, wavesLayer.current, plasmaLayer.current, treesLayer.current, solarLayer.current, waterLayer.current];
+  const allLayers = [bubblesLayer.current, wavesLayer.current, plasmaLayer.current, treesLayer.current, waterLayer.current];
       allLayers.forEach(layer => {
         if(layer) layer.uniforms.u_resolution.value.set(newW, newH);
       })
@@ -268,7 +262,6 @@ export function WebGLMidiVisualizer() {
     if (wavesLayer.current) wavesLayer.current.mesh.visible = mode === "waves";
     if (plasmaLayer.current) plasmaLayer.current.mesh.visible = mode === "plasma";
     if (treesLayer.current) treesLayer.current.mesh.visible = mode === "trees";
-    if (solarLayer.current) solarLayer.current.mesh.visible = mode === "solar";
     if (waterLayer.current) waterLayer.current.mesh.visible = mode === "water";
   }, [mode]);
 

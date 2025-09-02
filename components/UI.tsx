@@ -52,7 +52,6 @@ export const UI: React.FC<UIProps> = ({
         <UIButton onClick={() => setMode('waves')} isActive={mode === 'waves'}>Waves</UIButton>
         <UIButton onClick={() => setMode('plasma')} isActive={mode === 'plasma'}>Plasma</UIButton>
         <UIButton onClick={() => setMode('trees')} isActive={mode === 'trees'}>Trees</UIButton>
-        <UIButton onClick={() => setMode('solar')} isActive={mode === 'solar'}>Solar</UIButton>
         <UIButton onClick={() => setMode('water')} isActive={mode === 'water'}>Water</UIButton>
       </div>
 

@@ -1,6 +1,6 @@
 import type * as THREE from 'three';
 
-export type VisualizerMode = 'bubbles' | 'waves' | 'plasma' | 'trees' | 'solar' | 'water';
+export type VisualizerMode = 'bubbles' | 'waves' | 'plasma' | 'trees' | 'water';
 
 export interface NoteInfo {
   onTime: number;
@@ -42,6 +42,7 @@ export interface Ripple {
   y: number;
   strength: number;
   birth: number;
+  hue?: number; // optional hue for water/waves variants
 }
 
 export interface WaveLayer extends ShaderLayer {
@@ -83,19 +84,4 @@ export interface TreeLayer extends ShaderLayer {
   };
 }
 
-// --- Solar Types ---
-export interface NoteInfoSolar {
-  note: number;
-  velocity: number;
-  startTime: number;
-  on: number; // 1.0 for on, 0.0 for off
-}
-
-export interface SolarLayer extends ShaderLayer {
-  notes: NoteInfoSolar[];
-  maxNotes: number;
-  uniforms: ShaderLayer['uniforms'] & {
-    u_notes: { value: THREE.Vector4[] };
-    u_note_count: { value: number };
-  };
-}
+// (solar visual removed)

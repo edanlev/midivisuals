@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-  "postinstall": "npx tailwindcss -i ./index.css -o ./dist/tailwind.css --minify || true",
+    "postinstall": "npx tailwindcss -i ./index.css -o ./dist/tailwind.css --minify || true",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -16,12 +16,13 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
-  "typescript": "~5.8.2",
-  "vite": "^6.2.0",
-  "tailwindcss": "^3.4.7",
-  "postcss": "^8.4.28",
-  "autoprefixer": "^10.4.13",
-  "husky": "^8.0.0",
-  "lint-staged": "^13.0.0"
+    "@types/webmidi": "^3.0.1",
+    "autoprefixer": "^10.4.13",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
+    "postcss": "^8.4.28",
+    "tailwindcss": "^3.4.7",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
   }
 }
